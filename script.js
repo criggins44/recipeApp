@@ -1,13 +1,41 @@
 //GET
 //const axios = require ("axios");
 let url = "https://www.themealdb.com/api/json/v1/1/random.php";
-let displayResults = document.getElementById("display-container");
+let displayContainer = document.getElementById("display-container");
 let thumbNail = document.getElementById("thumbnail-container");
 let recipeBtn = document.getElementById("recipe-btn");
 let videoBtn = document.getElementById("video-btn");
 
 //thumbNail.innerHTML = `insert thumbnail here`;
 //displayResults.innerHTML = `display recipe results here`;
+
+/*
+axios.get(url).then((res)=> {
+    let myMeal = res.data.meals[0];
+    let ingredientList = [];
+    let count = 1;
+    for(i in myMeal){
+        let ingredient = "";
+        let measure = "";
+        if (i.startsWith("strIngredient") && myMeal[i]) {
+            ingredient = myMeal[i];
+            measure = myMeal[`strMeasure` + count];
+            count += 1;
+            console.log(ingredient, measure);
+            ingredientList.push(`${measure} ${ingredient}`);
+        }
+    };
+    console.log(ingredientList);
+    let list = document.createElement("ul");
+
+    ingredientList.forEach((i) => {
+        let listItem = document.createElement("li");
+        listItem.innerText = i;
+        list.appendChild(listItem);
+        displayContainer.appendChild(list);
+    })
+});
+*/
 
 recipeBtn.addEventListener("click", function(){
     axios.get(url).then(res => {
@@ -17,15 +45,54 @@ recipeBtn.addEventListener("click", function(){
         <p class='label'>${myMeal.strMeal}</p>
         <p class='label'>${myMeal.strArea}</p>
         `
-        displayResults.innerHTML = `
+        displayContainer.innerHTML = `
         ${myMeal.strInstructions}
         `;
-    
+//populates the instructions for making the dish
+
+        let ingredientList = [];
+        let count = 1;
+        for(i in myMeal){
+            let ingredient = "";
+            let measure = "";
+            if (i.startsWith("strIngredient") && myMeal[i]) {
+                ingredient = myMeal[i];
+                measure = myMeal[`strMeasure` + count];
+                count += 1;
+                console.log(ingredient, measure);
+                ingredientList.push(`${measure} ${ingredient}`);
+            }
+        };
+
+ //creates a bulleted list based on the ingredients from the website       
+
+        let list = document.createElement("ul");
+
+        ingredientList.forEach((i) => {
+            let listItem = document.createElement("li");
+            listItem.innerText = i;
+            list.appendChild(listItem);
+            displayContainer.appendChild(list);
+        })
+        
+        let videoClip = () => {
+            window.open(res.data.meals[0].strYoutube);
+            videoBtn.removeEventListener("click", videoClip);
+        }
+
+        videoBtn.addEventListener("click", videoClip)
+        /*
         videoBtn.addEventListener("click", function(){
             window.open(res.data.meals[0].strYoutube);
         })
+
+        videoBtn.removeEventListener("click", function(){
+            window.open(res.data.meals[0].strYoutube);
+        })
+        */
     }) 
 })
+
 
 
 /*
