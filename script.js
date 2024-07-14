@@ -79,8 +79,12 @@ recipeBtn.addEventListener("click", function(){
             window.open(res.data.meals[0].strYoutube);
             videoBtn.removeEventListener("click", videoClip);
         }
+//creats the function used to remove the event listener in order to retrieve new video
 
         videoBtn.addEventListener("click", videoClip)
+
+//generates new recipe and tutorial video with each mouse click
+
         /*
         videoBtn.addEventListener("click", function(){
             window.open(res.data.meals[0].strYoutube);
